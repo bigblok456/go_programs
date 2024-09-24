@@ -1,0 +1,42 @@
+{% if request.user.is_authenticated %}
+<p>{{ request.user }}</p>
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+</form>
+{% else %}
+<a href="{% url 'login' %}"> Login</a>
+{% endif %}
+
+
+
+
+<h1>My To-Do List</h1>
+<a href="{% url 'task-create' %}">Add a Task</a>
+
+
+<form method="get">
+    <input type="text" name="search-area" value="{{search_input}}">
+    <input type="submit" value="Search">
+</form>
+<table>
+    <tr>
+        <th>Item</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% if tasks.length != 0 %}
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td><a href="{% url 'task' task.id %}"> View </a></td>
+            <td><a href="{% url 'task-update' task.id %}"> Edit</a></td>
+            <td><a href="{% url 'task-delete' task.id %}"> Delete</a></td>
+        </tr>
+        {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="1"><h3>No items in list</h3></td>
+    </tr>
+    {% endif %}
+</table>
